@@ -162,10 +162,10 @@ public class NomadCloud extends AbstractCloudImpl {
             Future<Boolean> future = executorService.submit(callableTask);
 
             try {
-                future.get(1, TimeUnit.MINUTES);
+                future.get(cloud.workerTimeout, TimeUnit.MINUTES);
                 LOGGER.log(Level.INFO, "Connection established");
             } catch (Exception ex) {
-                LOGGER.log(Level.SEVERE, "Slave computer did not come online within one minutes, terminating slave");
+                LOGGER.log(Level.SEVERE, "Slave computer did not come online within " + workerTimeout + " minutes, terminating slave");
                 slave.terminate();
             } finally {
                 future.cancel(true);

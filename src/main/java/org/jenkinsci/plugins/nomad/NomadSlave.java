@@ -75,6 +75,14 @@ public class NomadSlave extends AbstractCloudSlave implements EphemeralNode {
     protected void _terminate(TaskListener listener)  {
         LOGGER.log(Level.INFO, "Asking Nomad to deregister slave '" + getNodeName() + "'");
         cloud.Nomad().stopSlave(getNodeName());
+
+        LOGGER.log(Level.INFO, "Removing slave from Jenkins: " + getNodeName());
+        if (getComputer().isOffline()) {
+            getComputer().setTemporarilyOffline(true,null);
+            try {
+                getComputer().doDoDelete();
+            } catch (IOException ignored){}
+        }
     }
 
     public NomadCloud getCloud() {

@@ -32,6 +32,7 @@ public class NomadCloud extends AbstractCloudImpl {
     private String slaveUrl;
     private NomadApi nomad;
     private int pending = 0;
+    private int workerTimeout = 1;
 
     @DataBoundConstructor
     public NomadCloud(
@@ -39,14 +40,17 @@ public class NomadCloud extends AbstractCloudImpl {
             String nomadUrl,
             String jenkinsUrl,
             String slaveUrl,
+            String workerTimeout,
             List<? extends NomadSlaveTemplate> templates)
     {
         super(name, null);
+        LOGGER.log(Level.WARNING, "testing if this is actually working: ");
 
         this.name = name;
         this.nomadUrl = nomadUrl;
         this.jenkinsUrl = jenkinsUrl;
         this.slaveUrl = slaveUrl;
+        setWorkerTimeout(workerTimeout);
 
         if (templates == null) {
             this.templates = Collections.emptyList();
@@ -83,7 +87,7 @@ public class NomadCloud extends AbstractCloudImpl {
         if (template != null) {
             try {
                 while (excessWorkload > 0) {
-                    
+
                     LOGGER.log(Level.INFO, "Excess workload of " + excessWorkload + ", provisioning new Jenkins slave on Nomad cluster");
 
                     final String slaveName = template.createSlaveName();
@@ -240,11 +244,22 @@ public class NomadCloud extends AbstractCloudImpl {
     public String getSlaveUrl() {
         return slaveUrl;
     }
+    public int getWorkerTimeout() {
+        return workerTimeout;
+    }
     public void setJenkinsUrl(String jenkinsUrl) {
         this.jenkinsUrl = jenkinsUrl;
     }
     public void setSlaveUrl(String slaveUrl) {
         this.slaveUrl = slaveUrl;
+    }
+    public void setWorkerTimeout(String workerTimeout) {
+        try {
+            this.workerTimeout = Integer.parseInt(workerTimeout);
+        } catch(NumberFormatException ex) {
+            LOGGER.log(Level.WARNING, "Failed to parse timeout defaulting to 1 minute: " + workerTimeout);
+            this.workerTimeout = 1;
+        }
     }
     public void setNomad(NomadApi nomad) {
         this.nomad = nomad;

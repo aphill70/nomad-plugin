@@ -165,8 +165,9 @@ public class NomadCloud extends AbstractCloudImpl {
                 future.get(cloud.workerTimeout, TimeUnit.MINUTES);
                 LOGGER.log(Level.INFO, "Connection established");
             } catch (Exception ex) {
-                LOGGER.log(Level.SEVERE, "Slave computer did not come online within " + workerTimeout + " minutes, terminating slave");
+                LOGGER.log(Level.SEVERE, "Slave computer did not come online within " + workerTimeout + " minutes, terminating slave"+ slave);
                 slave.terminate();
+                throw new RuntimeException("Agent failed to start up before timeout: " + workerTimeout);
             } finally {
                 future.cancel(true);
                 executorService.shutdown();

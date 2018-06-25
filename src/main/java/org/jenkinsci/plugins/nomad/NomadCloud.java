@@ -115,8 +115,6 @@ public class NomadCloud extends AbstractCloudImpl {
         NomadSlaveTemplate template;
         NomadCloud cloud;
 
-        Boolean failed = false;
-
         public ProvisioningCallback(String slaveName, NomadSlaveTemplate template, NomadCloud cloud) {
             this.slaveName = slaveName;
             this.template = template;
@@ -124,7 +122,6 @@ public class NomadCloud extends AbstractCloudImpl {
         }
 
         public Node call() throws Exception {
-
             final NomadSlave slave = new NomadSlave(
                     cloud,
                     slaveName,
@@ -169,14 +166,12 @@ public class NomadCloud extends AbstractCloudImpl {
             } catch (Exception ex) {
                 LOGGER.log(Level.SEVERE, "Slave computer did not come online within " + workerTimeout + " minutes, terminating slave"+ slave);
                 slave.terminate();
-                failed = true;
+                throw new RuntimeException("Timed out waiting for agent to start up. Timeout: " + workerTimeout + " minutes.");
             } finally {
                 future.cancel(true);
                 executorService.shutdown();
+                pending -= template.getNumExecutors();
             }
-            pending -= template.getNumExecutors();
-            if (failed)
-                return null;
             return slave;
         }
     }

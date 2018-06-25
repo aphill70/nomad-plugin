@@ -257,8 +257,7 @@ public class NomadCloud extends AbstractCloudImpl {
         try {
             this.workerTimeout = Integer.parseInt(workerTimeout);
         } catch(NumberFormatException ex) {
-            LOGGER.log(Level.WARNING, "Failed to parse timeout defaulting to 1 minute: " + workerTimeout);
-            this.workerTimeout = 1;
+            LOGGER.log(Level.WARNING, "Failed to parse timeout defaulting to current value (default: 1 minute): " + workerTimeout + " minutes");
         }
     }
     public void setNomad(NomadApi nomad) {

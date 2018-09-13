@@ -131,11 +131,11 @@ public class NomadCloud extends AbstractCloudImpl {
                     new NomadRetentionStrategy(template.getIdleTerminationInMinutes()),
                     Collections.<NodeProperty<?>>emptyList()
             );
-            Jenkins.get().addNode(slave);
+            Jenkins.getInstance().addNode(slave);
 
             // Support for Jenkins security
             String jnlpSecret = "";
-            if(Jenkins.get().isUseSecurity()) {
+            if(Jenkins.getInstance().isUseSecurity()) {
                     jnlpSecret = jenkins.slaves.JnlpSlaveAgentProtocol.SLAVE_SECRET.mac(slaveName);
             }
 

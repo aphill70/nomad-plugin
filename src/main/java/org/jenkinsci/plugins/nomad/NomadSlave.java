@@ -45,7 +45,7 @@ public class NomadSlave extends AbstractCloudSlave implements EphemeralNode {
             template.getNumExecutors(),
             template.getMode(),
             labelString,
-            new JNLPLauncher(false),
+            new JNLPLauncher(),
             retentionStrategy,
             nodeProperties
         );
@@ -59,7 +59,7 @@ public class NomadSlave extends AbstractCloudSlave implements EphemeralNode {
     @DataBoundConstructor
     // {"name":"jenkins-95266550a531","cloudName":"NomadTest","labelString":"test","mode":"NORMAL","remoteFS":"/","numExecutors":"1","idleTerminationInMinutes":"10","reusable":true}
     public NomadSlave(String name, String cloudName, String remoteFS, String numExecutors, Mode mode, String labelString, String idleTerminationInMinutes, boolean reusable) throws FormException, IOException{
-        super(name, NODE_DESCRIPTION, remoteFS, numExecutors, mode, labelString, new JNLPLauncher(false), new NomadRetentionStrategy(idleTerminationInMinutes), Collections.<NodeProperty<?>>emptyList());
+        super(name, NODE_DESCRIPTION, remoteFS, numExecutors, mode, labelString, new JNLPLauncher(), new NomadRetentionStrategy(idleTerminationInMinutes), Collections.<NodeProperty<?>>emptyList());
 
         this.cloudName = cloudName;
         this.reusable = reusable;

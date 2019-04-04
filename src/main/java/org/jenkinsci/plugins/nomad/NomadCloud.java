@@ -14,6 +14,7 @@ import hudson.util.FormValidation;
 import hudson.model.Label;
 import hudson.model.Node;
 import jenkins.model.Jenkins;
+import org.kohsuke.stapler.interceptor.RequirePOST;
 import org.kohsuke.stapler.verb.POST;
 
 import java.util.ArrayList;
@@ -208,7 +209,7 @@ public class NomadCloud extends AbstractCloudImpl {
             return "Nomad";
         }
 
-        @POST
+        @RequirePOST
         public FormValidation doTestConnection(@QueryParameter("nomadUrl") String nomadUrl) {
             Jenkins.get().checkPermission(Jenkins.ADMINISTER);
             try {

@@ -22,7 +22,7 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-public class NomadCloud extends Cloud {
+public class NomadCloud extends AbstractCloudImpl {
 
     private static final Logger LOGGER = Logger.getLogger(NomadCloud.class.getName());
 
@@ -50,7 +50,7 @@ public class NomadCloud extends Cloud {
             String nomadACL,
             List<? extends NomadSlaveTemplate> templates)
     {
-        super(name);
+        super(name, null);
 
         this.nomadACL = Secret.fromString(nomadACL);
         this.nomadUrl = nomadUrl;
@@ -151,7 +151,7 @@ public class NomadCloud extends Cloud {
             }
 
             LOGGER.log(Level.INFO, "Asking Nomad to schedule new Jenkins slave");
-            nomad.startSlave(slaveName, jnlpSecret, template);
+            nomad.startSlave(slaveName, nomadACL.getPlainText(), jnlpSecret, template);
 
             // Check scheduling success
             Callable<Boolean> callableTask = () -> {
@@ -265,7 +265,10 @@ public class NomadCloud extends Cloud {
     }
 
     public String getNomadACL() {
-        return this.nomadACL.getPlainText();
+        if (nomadACL != null)
+            return this.nomadACL.getPlainText();
+        else
+            return null;
     }
 
     public void setJenkinsUrl(String jenkinsUrl) {

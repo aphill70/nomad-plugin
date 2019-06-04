@@ -221,6 +221,14 @@ public class NomadSlaveTemplate implements Describable<NomadSlaveTemplate> {
         return driver;
     }
 
+    public Boolean isDockerDriver(){
+        return getDriver().equals("docker");
+    }
+
+    public Boolean isJavaDriver(){
+        return getDriver().equals("java");
+    }
+
     public Boolean getPrivileged() {
         return privileged;
     }

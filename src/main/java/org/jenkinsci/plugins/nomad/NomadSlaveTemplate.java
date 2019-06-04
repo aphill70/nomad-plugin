@@ -130,7 +130,7 @@ public class NomadSlaveTemplate implements Describable<NomadSlaveTemplate> {
     @Override
     @SuppressWarnings("unchecked")
     public Descriptor<NomadSlaveTemplate> getDescriptor() {
-        return Jenkins.getInstance().getDescriptor(getClass());
+        return Jenkins.get().getDescriptor(getClass());
     }
 
     public String createSlaveName() {

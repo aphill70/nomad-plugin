@@ -33,6 +33,7 @@ public class NomadApiTest {
             "slaveUrl",
             "1",
             "",
+            false,
             Collections.singletonList(slaveTemplate));
 
     @Before

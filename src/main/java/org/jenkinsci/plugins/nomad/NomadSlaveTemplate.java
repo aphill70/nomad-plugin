@@ -142,7 +142,7 @@ public class NomadSlaveTemplate implements Describable<NomadSlaveTemplate> {
     }
 
     public String createSlaveName() {
-        return this.prefix + "-" + Long.toHexString(System.nanoTime());
+        return getPrefix() + "-" + Long.toHexString(System.nanoTime());
     }
 
     public Set<LabelAtom> getLabelSet() {
@@ -158,7 +158,9 @@ public class NomadSlaveTemplate implements Describable<NomadSlaveTemplate> {
     }
 
     public String getPrefix() {
-        return prefix;
+        if(StringUtils.isNotEmpty(prefix))
+            return prefix;
+        return SLAVE_PREFIX;
     }
 
     public int getCpu() {

@@ -99,7 +99,6 @@ public class NomadCloud extends AbstractCloudImpl {
         if (template != null) {
             try {
                 while (excessWorkload > 0) {
-
                     LOGGER.log(Level.INFO, "Excess workload of " + excessWorkload + ", provisioning new Jenkins slave on Nomad cluster");
 
                     final String slaveName = template.createSlaveName();
